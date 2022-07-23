@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:
+  Set CloudWatch Alarms
+
+# ------------------------------------------------------------#
+# Input Parameters
+# ------------------------------------------------------------# 
+Parameters:
+  Ec2InstanceId:
+    Description: Ec2 InstanceId
+    Type: AWS::EC2::Instance::Id
+
+# ------------------------------------------------------------#
+#  Create sns Topic
+# ------------------------------------------------------------#
+Resources:
+  C2CPUUtilizationAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - { "Fn::ImportValue": !Sub "my-sns-topic" }
+      AlarmName: test-Alarms
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 60
+      EvaluationPeriods: 2
+      Threshold: 40
+      TreatMissingData: breaching
+      OKActions: 
+        - { "Fn::ImportValue": !Sub "my-sns-topic" }
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
