@@ -11,7 +11,7 @@ Parameters:
     Type: AWS::EC2::Instance::Id
 
 # ------------------------------------------------------------#
-#  Create sns Topic
+#  Create CloudWatch Alarms
 # ------------------------------------------------------------#
 Resources:
   C2CPUUtilizationAlarm:
